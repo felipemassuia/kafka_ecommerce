@@ -1,6 +1,7 @@
 package ecommerce;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
@@ -9,7 +10,8 @@ public class FraudDetectorService {
 
 		var fraudDetectorService = new FraudDetectorService();
 		try (var service = new KafkaService<>("ECOMMERCE_NEW_ORDER", fraudDetectorService::parse,
-				FraudDetectorService.class.getSimpleName(), Order.class)) {
+				FraudDetectorService.class.getSimpleName(), Order.class,
+				new HashMap<>())) {
 			service.run();
 		}
 

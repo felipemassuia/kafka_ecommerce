@@ -3,6 +3,7 @@ package ecommerce;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Properties;
 import java.util.regex.Pattern;
 
@@ -16,7 +17,8 @@ public class LogService {
 
 		var logService = new LogService();
 		try (var kafkaService = new KafkaService(Pattern.compile("ECOMMERCE.*"), logService::parse,
-				LogService.class.getSimpleName(), String.class)) {
+				LogService.class.getSimpleName(), String.class,
+				Map.of(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName()))) {
 			kafkaService.run();
 		}
 	}

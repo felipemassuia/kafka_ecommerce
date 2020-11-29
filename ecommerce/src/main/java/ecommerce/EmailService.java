@@ -1,6 +1,7 @@
 package ecommerce;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
@@ -9,7 +10,8 @@ public class EmailService {
 
 		var emailService = new EmailService();
 		try (var service = new KafkaService("ECOMMERCE_NEW_EMAIL", emailService::parse,
-				EmailService.class.getSimpleName(), Email.class)) {
+				EmailService.class.getSimpleName(), Email.class,
+				new HashMap<>())) {
 			service.run();
 		}
 
