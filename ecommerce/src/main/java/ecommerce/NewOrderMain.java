@@ -1,6 +1,7 @@
 package ecommerce;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
@@ -8,14 +9,22 @@ public class NewOrderMain {
 
 	public static void main(String[] args) throws InterruptedException, ExecutionException, IOException {
 
-		try (var dispatcher = new KafkaDispatcher()) {
+		try (var orderDispatcher = new KafkaDispatcher<Order>()) {
+			try (var emailDispatcher = new KafkaDispatcher<String>()) {
 
-			for (int i = 0; i < 10; i++) {
+				for (int i = 0; i < 10; i++) {
 
-				String id = UUID.randomUUID().toString();
-				dispatcher.send("ECOMMERCE_NEW_ORDER", id, "Valor 5128929843");
-				dispatcher.send("ECOMMERCE_NEW_EMAIL", id, "Thank you! We are processing your order!");
+					String userId = UUID.randomUUID().toString();
+					String orderId = UUID.randomUUID().toString();
+					BigDecimal amount = new BigDecimal(Math.random() * 500 + 10);
 
+					var order = new Order(userId, orderId, amount);
+					var email = "email@gmail.com";
+
+					orderDispatcher.send("ECOMMERCE_NEW_ORDER", userId, order);
+					emailDispatcher.send("ECOMMERCE_NEW_EMAIL", userId, email);
+
+				}
 			}
 		}
 	}
