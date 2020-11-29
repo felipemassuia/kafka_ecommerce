@@ -16,12 +16,12 @@ public class LogService {
 
 		var logService = new LogService();
 		try (var kafkaService = new KafkaService(Pattern.compile("ECOMMERCE.*"), logService::parse,
-				logService.getClass().getSimpleName())) {
+				LogService.class.getSimpleName(), String.class)) {
 			kafkaService.run();
 		}
 	}
 
-	void parse(ConsumerRecord<String, String> record) {
+	private void parse(ConsumerRecord<String, String> record) {
 
 		System.out.println("------------------------------------------");
 		System.out.println("LOG: " + record.topic());
