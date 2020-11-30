@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -14,20 +15,22 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 
 public class KafkaService<T> implements Closeable {
-	
+
 	private final KafkaConsumer<String, T> consumer;
 	private final ConsumerFunction parse;
 
-	public KafkaService(String topic, ConsumerFunction parse, String simpleName, Class<T> type, Map<String, String> properties) {
+	public KafkaService(String topic, ConsumerFunction parse, String simpleName, Class<T> type,
+			Map<String, String> properties) {
 		this(parse, simpleName, type, properties);
 		consumer.subscribe(Collections.singletonList(topic));
 	}
 
-	public KafkaService(Pattern topic, ConsumerFunction parse, String simpleName, Class<T> type, Map<String, String> properties) {
+	public KafkaService(Pattern topic, ConsumerFunction parse, String simpleName, Class<T> type,
+			Map<String, String> properties) {
 		this(parse, simpleName, type, properties);
 		consumer.subscribe(topic);
 	}
-	
+
 	private KafkaService(ConsumerFunction parse, String simpleName, Class<T> type, Map<String, String> properties) {
 		this.parse = parse;
 		this.consumer = new KafkaConsumer<>(getProperties(simpleName, type, properties));
@@ -39,7 +42,15 @@ public class KafkaService<T> implements Closeable {
 			if (!records.isEmpty()) {
 				System.out.println("Encontrei " + records.count() + " registros");
 				for (var record : records) {
-					parse.consume(record);
+					try {
+						parse.consume(record);
+					} catch (InterruptedException e) {
+						//so far, just logging the exception for this message
+						e.printStackTrace();
+					} catch (ExecutionException e) {
+						//so far, just logging the exception for this message
+						e.printStackTrace();
+					}
 				}
 			}
 		}
@@ -61,7 +72,7 @@ public class KafkaService<T> implements Closeable {
 	@Override
 	public void close() throws IOException {
 		consumer.close();
-		
+
 	}
 
 }

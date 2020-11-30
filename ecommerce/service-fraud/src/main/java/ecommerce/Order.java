@@ -13,6 +13,31 @@ public class Order {
 		this.orderId = orderId;
 		this.amount = amount;
 	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public BigDecimal getAmount() {
+		return amount;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Order [userId=");
+		builder.append(userId);
+		builder.append(", orderId=");
+		builder.append(orderId);
+		builder.append(", amount=");
+		builder.append(amount);
+		builder.append("]");
+		return builder.toString();
+	}
 	
 	
 
