@@ -38,10 +38,10 @@ public class FraudDetectorService {
 
 		if (isFraud(order)) {
 			System.out.println("Order is a fraud!!!!" + order);
-			kafkaDispatcher.send("ECOMMERCE_ORDER_REJECTED", order.getUserId(), order);
+			kafkaDispatcher.send("ECOMMERCE_ORDER_REJECTED", order.getEmail(), order);
 		} else {
 			System.out.println("Order approved: " + order);
-			kafkaDispatcher.send("ECOMMERCE_ORDER_APPROVED", order.getUserId(), order);
+			kafkaDispatcher.send("ECOMMERCE_ORDER_APPROVED", order.getEmail(), order);
 		}
 
 	}

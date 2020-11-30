@@ -16,17 +16,16 @@ public class NewOrderMain {
 
 				for (int i = 0; i < 10; i++) {
 
-					String userId = UUID.randomUUID().toString();
 					String orderId = UUID.randomUUID().toString();
 					BigDecimal amount = new BigDecimal(Math.random() * 500 + 10);
 					String subject = "Subject";
 					String body = "Thank you! We are processing your order!";
-					var order = new Order(userId, orderId, amount, email);
+					var order = new Order(orderId, amount, email);
 					var emailObject = new Email(subject, body);
 					
 
-					orderDispatcher.send("ECOMMERCE_NEW_ORDER", userId, order);
-					emailDispatcher.send("ECOMMERCE_NEW_EMAIL", userId, emailObject);
+					orderDispatcher.send("ECOMMERCE_NEW_ORDER", email, order);
+					emailDispatcher.send("ECOMMERCE_NEW_EMAIL", email, emailObject);
 
 				}
 			}
