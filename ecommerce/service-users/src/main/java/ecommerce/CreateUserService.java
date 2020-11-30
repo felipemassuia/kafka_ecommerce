@@ -16,8 +16,12 @@ public class CreateUserService {
 	CreateUserService() throws SQLException {
 		String url = "jdbc:sqlite:target/users_database.db";
 		this.connection = DriverManager.getConnection(url);
-		connection.createStatement().execute("create table Users ( "
-				+ "uuid varchar(200) primary key, email varchar(200))");
+		try{connection.createStatement().execute("create table Users ( "
+				+ "uuid varchar(200) primary key, email varchar(200))");}
+		catch(SQLException ex) {
+			//Be careful, the sql could be wrong
+			ex.printStackTrace();
+		}
 	}
 
 	public static void main(String[] args) throws IOException, SQLException {
@@ -41,17 +45,17 @@ public class CreateUserService {
 		var order = record.value();
 		
 		if(isNewUser(order.getEmail())) {
-			insertNewUser(order.getEmail());
+			insertNewUser(order.getEmail(), order.getUserId());
 		}
 
 	}
 
-	private void insertNewUser(String email) throws SQLException {
+	private void insertNewUser(String email, String uuid) throws SQLException {
 		var insert = connection.prepareStatement("insert into Users (uuid, email) values (?,?)");
-		insert.setString(1,  "uuid");
-		insert.setString(2, "email");
+		insert.setString(1, uuid);
+		insert.setString(2, email);
 		insert.execute();
-		System.out.println("Usuario uuid e " + email + "adicionados com sucesso!");
+		System.out.println("Usuario uuid e " + email + " adicionado com sucesso!");
 	}
 
 	private boolean isNewUser(String email) throws SQLException {

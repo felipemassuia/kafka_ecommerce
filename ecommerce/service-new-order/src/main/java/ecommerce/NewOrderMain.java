@@ -9,6 +9,8 @@ public class NewOrderMain {
 
 	public static void main(String[] args) throws InterruptedException, ExecutionException, IOException {
 
+		String email = Math.random() + "@email.com";
+		
 		try (var orderDispatcher = new KafkaDispatcher<Order>()) {
 			try (var emailDispatcher = new KafkaDispatcher<Email>()) {
 
@@ -17,15 +19,14 @@ public class NewOrderMain {
 					String userId = UUID.randomUUID().toString();
 					String orderId = UUID.randomUUID().toString();
 					BigDecimal amount = new BigDecimal(Math.random() * 500 + 10);
-					String subject = "Assunto do email";
-					String body = "email@gmail.com";
-
-					var order = new Order(userId, orderId, amount);
-					var email = new Email(subject, body);
+					String subject = "Subject";
+					String body = "Thank you! We are processing your order!";
+					var order = new Order(userId, orderId, amount, email);
+					var emailObject = new Email(subject, body);
 					
 
 					orderDispatcher.send("ECOMMERCE_NEW_ORDER", userId, order);
-					emailDispatcher.send("ECOMMERCE_NEW_EMAIL", userId, email);
+					emailDispatcher.send("ECOMMERCE_NEW_EMAIL", userId, emailObject);
 
 				}
 			}
