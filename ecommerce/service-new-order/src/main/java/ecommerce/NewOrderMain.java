@@ -24,8 +24,8 @@ public class NewOrderMain {
 					var emailObject = new Email(subject, body);
 					
 
-					orderDispatcher.send("ECOMMERCE_NEW_ORDER", email, order);
-					emailDispatcher.send("ECOMMERCE_NEW_EMAIL", email, emailObject);
+					//orderDispatcher.send("ECOMMERCE_NEW_ORDER", email, order);
+					//emailDispatcher.send("ECOMMERCE_NEW_EMAIL", email, emailObject);
 
 				}
 			}

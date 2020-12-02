@@ -16,7 +16,7 @@ public class ReadingReportService {
 	public static void main(String[] args) throws IOException {
 
 		var readingReportService = new ReadingReportService();
-		try (var service = new KafkaService<>("USER_GENERATE_READING_REPORT", readingReportService::parse,
+		try (var service = new KafkaService<>("ECOMMERCE_USER_GENERATE_READING_REPORT", readingReportService::parse,
 				ReadingReportService.class.getSimpleName(), User.class, new HashMap<>())) {
 			service.run();
 		}
