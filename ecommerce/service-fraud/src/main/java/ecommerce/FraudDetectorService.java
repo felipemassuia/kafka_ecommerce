@@ -33,7 +33,7 @@ public class FraudDetectorService {
 			// ignoring
 			e.printStackTrace();
 		}
-
+				
 		var order = record.value();
 
 		if (isFraud(order)) {
