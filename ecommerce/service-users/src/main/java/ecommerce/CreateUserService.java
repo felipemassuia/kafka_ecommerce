@@ -29,7 +29,7 @@ public class CreateUserService {
 
 		var userService = new CreateUserService();
 		try (var service = new KafkaService<>("ECOMMERCE_ECOMMERCE_NEW_ORDER", userService::parse,
-				CreateUserService.class.getSimpleName(), Order.class, new HashMap<>())) {
+				CreateUserService.class.getSimpleName(), new HashMap<>())) {
 			service.run();
 		}
 

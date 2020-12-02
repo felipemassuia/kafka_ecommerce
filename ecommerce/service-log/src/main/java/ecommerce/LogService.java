@@ -17,7 +17,7 @@ public class LogService {
 
 		var logService = new LogService();
 		try (var kafkaService = new KafkaService(Pattern.compile("ECOMMERCE.*"), logService::parse,
-				LogService.class.getSimpleName(), String.class,
+				LogService.class.getSimpleName(), 
 				Map.of(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName()))) {
 			kafkaService.run();
 		}

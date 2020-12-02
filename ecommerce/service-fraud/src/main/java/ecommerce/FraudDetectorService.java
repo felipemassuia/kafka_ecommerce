@@ -12,7 +12,7 @@ public class FraudDetectorService {
 
 		var fraudDetectorService = new FraudDetectorService();
 		try (var service = new KafkaService<>("ECOMMERCE_NEW_ORDER", fraudDetectorService::parse,
-				FraudDetectorService.class.getSimpleName(), Order.class, new HashMap<>())) {
+				FraudDetectorService.class.getSimpleName(), new HashMap<>())) {
 			service.run();
 		}
 
