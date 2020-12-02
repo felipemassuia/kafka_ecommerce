@@ -13,7 +13,7 @@ import org.apache.kafka.common.serialization.StringSerializer;
 
 public class KafkaDispatcher<T> implements Closeable{
 	
-	private final KafkaProducer<String, T> producer;
+	private final KafkaProducer<String, Message<T>> producer;
 	
 	public KafkaDispatcher () {
 		
@@ -31,8 +31,9 @@ public class KafkaDispatcher<T> implements Closeable{
 		return properties;
 	}
 
-	public void send(String topic, String id, T value) throws InterruptedException, ExecutionException {
-				
+	public void send(String topic, String id, T payload) throws InterruptedException, ExecutionException {
+		
+		var value = new Message<>(new CorrelationId(), payload);
 		var record = new ProducerRecord<>(topic, id, value);
 
 		Callback callback = (data, ex) -> {
