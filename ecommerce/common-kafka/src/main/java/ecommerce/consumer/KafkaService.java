@@ -1,4 +1,4 @@
-package ecommerce;
+package ecommerce.consumer;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -13,6 +13,10 @@ import java.util.regex.Pattern;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
+
+import ecommerce.Message;
+import ecommerce.dispatcher.GsonSerializer;
+import ecommerce.dispatcher.KafkaDispatcher;
 
 public class KafkaService<T> implements Closeable {
 
@@ -35,7 +39,7 @@ public class KafkaService<T> implements Closeable {
 		this.consumer = new KafkaConsumer<>(getProperties(simpleName, properties));
 	}
 
-	void run() throws InterruptedException, ExecutionException, IOException {
+	public void run() throws InterruptedException, ExecutionException, IOException {
 
 		try (var deadLetterDispatcher = new KafkaDispatcher<>()) {
 

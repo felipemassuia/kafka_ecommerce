@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
+import ecommerce.dispatcher.KafkaDispatcher;
+
 public class NewOrderMain {
 
 	public static void main(String[] args) throws InterruptedException, ExecutionException, IOException {
@@ -22,10 +24,10 @@ public class NewOrderMain {
 					String body = "Thank you! We are processing your order!";
 					var order = new Order(orderId, amount, email);
 					var emailObject = new Email(subject, body);
+					var id = new CorrelationId(NewOrderMain.class.getSimpleName());
 					
-
-					//orderDispatcher.send("ECOMMERCE_NEW_ORDER", email, order);
-					//emailDispatcher.send("ECOMMERCE_NEW_EMAIL", email, emailObject);
+					orderDispatcher.send("ECOMMERCE_NEW_ORDER", email, id, order);
+					emailDispatcher.send("ECOMMERCE_NEW_EMAIL", email, id, emailObject);
 
 				}
 			}

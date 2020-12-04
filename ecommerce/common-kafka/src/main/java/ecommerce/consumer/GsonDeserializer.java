@@ -1,9 +1,12 @@
-package ecommerce;
+package ecommerce.consumer;
 
 import org.apache.kafka.common.serialization.Deserializer;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import ecommerce.Message;
+import ecommerce.MessageAdapter;
 
 public class GsonDeserializer implements Deserializer<Message> {
 	

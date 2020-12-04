@@ -12,6 +12,9 @@ import java.util.concurrent.ExecutionException;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
+import ecommerce.consumer.KafkaService;
+import ecommerce.dispatcher.KafkaDispatcher;
+
 public class BatchSendMessageService {
 	private Connection connection;
 	private final KafkaDispatcher<User> dispatcher = new KafkaDispatcher<>();
