@@ -13,7 +13,7 @@ public class ReadingReportService {
 	
 	private static final Path SOURCE = new File("/Users/felipemassuia/git/kafka_ecommerce/ecommerce/service-reading-report/src/main/resources/report.txt").toPath();
 	
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, InterruptedException, ExecutionException {
 
 		var readingReportService = new ReadingReportService();
 		try (var service = new KafkaService<>("ECOMMERCE_USER_GENERATE_READING_REPORT", readingReportService::parse,

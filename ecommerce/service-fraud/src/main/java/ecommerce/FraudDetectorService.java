@@ -8,7 +8,7 @@ import java.util.concurrent.ExecutionException;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
 public class FraudDetectorService {
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, InterruptedException, ExecutionException {
 
 		var fraudDetectorService = new FraudDetectorService();
 		try (var service = new KafkaService<>("ECOMMERCE_NEW_ORDER", fraudDetectorService::parse,

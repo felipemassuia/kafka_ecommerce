@@ -2,11 +2,12 @@ package ecommerce;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
 public class EmailService {
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, InterruptedException, ExecutionException {
 
 		var emailService = new EmailService();
 		try (var service = new KafkaService("ECOMMERCE_NEW_EMAIL", emailService::parse,

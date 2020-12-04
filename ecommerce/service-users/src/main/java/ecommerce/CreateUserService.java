@@ -25,7 +25,7 @@ public class CreateUserService {
 		}
 	}
 
-	public static void main(String[] args) throws IOException, SQLException {
+	public static void main(String[] args) throws IOException, SQLException, InterruptedException, ExecutionException {
 
 		var userService = new CreateUserService();
 		try (var service = new KafkaService<>("ECOMMERCE_ECOMMERCE_NEW_ORDER", userService::parse,

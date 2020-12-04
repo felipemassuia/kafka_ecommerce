@@ -18,15 +18,14 @@ public class KafkaService<T> implements Closeable {
 
 	private final KafkaConsumer<String, Message<T>> consumer;
 	private final ConsumerFunction parse;
+	private final KafkaDispatcher<T> deadLetterDispatcher = new KafkaDispatcher<>();
 
-	public KafkaService(String topic, ConsumerFunction<T> parse, String simpleName,
-			Map<String, String> properties) {
+	public KafkaService(String topic, ConsumerFunction<T> parse, String simpleName, Map<String, String> properties) {
 		this(parse, simpleName, properties);
 		consumer.subscribe(Collections.singletonList(topic));
 	}
 
-	public KafkaService(Pattern topic, ConsumerFunction<T> parse, String simpleName,
-			Map<String, String> properties) {
+	public KafkaService(Pattern topic, ConsumerFunction<T> parse, String simpleName, Map<String, String> properties) {
 		this(parse, simpleName, properties);
 		consumer.subscribe(topic);
 	}
@@ -36,17 +35,24 @@ public class KafkaService<T> implements Closeable {
 		this.consumer = new KafkaConsumer<>(getProperties(simpleName, properties));
 	}
 
-	void run() {
-		while (true) {
-			var records = consumer.poll(Duration.ofMillis(1));
-			if (!records.isEmpty()) {
-				System.out.println("Encontrei " + records.count() + " registros");
-				for (var record : records) {
-					try {
-						parse.consume(record);
-					} catch (Exception e) {
-						// so far, just logging the exception for this message
-						e.printStackTrace();
+	void run() throws InterruptedException, ExecutionException, IOException {
+
+		try (var deadLetterDispatcher = new KafkaDispatcher<>()) {
+
+			while (true) {
+				var records = consumer.poll(Duration.ofMillis(1));
+				if (!records.isEmpty()) {
+					System.out.println("Encontrei " + records.count() + " registros");
+					for (var record : records) {
+						try {
+							parse.consume(record);
+						} catch (Exception e) {
+							var message = record.value();
+							deadLetterDispatcher.send("ECOMMERCE_DEADLETTER", message.getId().toString(),
+									message.getId().continueWith("DeadLetter"),
+									new GsonSerializer().serialize("", message));
+							e.printStackTrace();
+						}
 					}
 				}
 			}
