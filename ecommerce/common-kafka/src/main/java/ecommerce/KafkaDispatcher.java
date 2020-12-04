@@ -4,11 +4,13 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.serialization.StringSerializer;
 
 public class KafkaDispatcher<T> implements Closeable{
@@ -28,9 +30,14 @@ public class KafkaDispatcher<T> implements Closeable{
 		properties.setProperty(ProducerConfig.ACKS_CONFIG, "all");
 		return properties;
 	}
-
+	
 	public void send(String topic, String id, CorrelationId correlationId, T payload) throws InterruptedException, ExecutionException {
 		
+		Future<RecordMetadata> future = sendAsync(topic, id, correlationId, payload);
+		future.get();		
+	}
+
+	Future<RecordMetadata> sendAsync(String topic, String id, CorrelationId correlationId, T payload) {
 		var value = new Message<>(correlationId, payload);
 		var record = new ProducerRecord<>(topic, id, value);
 
@@ -43,7 +50,8 @@ public class KafkaDispatcher<T> implements Closeable{
 					"Sucesso de envio" + data.topic() + "partition " + data.partition() + "offset" + data.offset());
 		};
 
-		producer.send(record, callback).get();		
+		var future = producer.send(record, callback);
+		return future;
 	}
 
 	@Override

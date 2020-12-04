@@ -48,7 +48,7 @@ public class BatchSendMessageService {
 		System.out.println("Topic: " + message.getPayload());
 
 		for (User user : getAllUsers()) {
-			dispatcher.send(message.getPayload(), user.getUuid(),
+			dispatcher.sendAsync(message.getPayload(), user.getUuid(),
 					message.getId().continueWith(BatchSendMessageService.class.getSimpleName()), user);
 		}
 
