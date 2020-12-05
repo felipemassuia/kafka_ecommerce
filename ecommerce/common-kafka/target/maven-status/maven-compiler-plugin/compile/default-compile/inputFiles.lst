@@ -1,5 +1,8 @@
-/Users/felipemassuia/git/kafka_ecommerce/ecommerce/common-kafka/src/main/java/ecommerce/GsonSerializer.java
-/Users/felipemassuia/git/kafka_ecommerce/ecommerce/common-kafka/src/main/java/ecommerce/ConsumerFunction.java
-/Users/felipemassuia/git/kafka_ecommerce/ecommerce/common-kafka/src/main/java/ecommerce/KafkaDispatcher.java
-/Users/felipemassuia/git/kafka_ecommerce/ecommerce/common-kafka/src/main/java/ecommerce/KafkaService.java
-/Users/felipemassuia/git/kafka_ecommerce/ecommerce/common-kafka/src/main/java/ecommerce/GsonDeserializer.java
+/Users/felipemassuia/git/kafka_ecommerce/ecommerce/common-kafka/src/main/java/ecommerce/CorrelationId.java
+/Users/felipemassuia/git/kafka_ecommerce/ecommerce/common-kafka/src/main/java/ecommerce/consumer/KafkaService.java
+/Users/felipemassuia/git/kafka_ecommerce/ecommerce/common-kafka/src/main/java/ecommerce/consumer/ConsumerFunction.java
+/Users/felipemassuia/git/kafka_ecommerce/ecommerce/common-kafka/src/main/java/ecommerce/Message.java
+/Users/felipemassuia/git/kafka_ecommerce/ecommerce/common-kafka/src/main/java/ecommerce/dispatcher/KafkaDispatcher.java
+/Users/felipemassuia/git/kafka_ecommerce/ecommerce/common-kafka/src/main/java/ecommerce/dispatcher/GsonSerializer.java
+/Users/felipemassuia/git/kafka_ecommerce/ecommerce/common-kafka/src/main/java/ecommerce/MessageAdapter.java
+/Users/felipemassuia/git/kafka_ecommerce/ecommerce/common-kafka/src/main/java/ecommerce/consumer/GsonDeserializer.java
