@@ -1,0 +1,28 @@
+[THIS FILE CONTAINS SOME COMMANDS AND TIPS TO USE AND CONFIGURE KAFKA AND ZOOKEEPER IN A UNIX SERVER]
+
+Start Zookeeper
+zookeeper-server-start.sh config/zookeeper.properties 
+
+Start Kafka
+kafka-server-start.sh config/server.properties
+
+Create topic
+kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic LOJA_NOVO_PEDIDO
+
+List topics
+kafka-topics.sh --list --bootstrap-server localhost:9092
+
+Start producer
+kafka-console-producer.sh --broker-list localhost:9092 --topic ECOMMERCE_NEW_EMAIL
+
+Start consumer from beginning
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic ECOMMERCE_NEW_ORDER -from-beginning
+
+Alter partitions
+kafka-topics.sh --alter --zookeeper localhost:2181 --topic ECOMMERCE_NEW_ORDER --partitions 3
+
+Describe messages in topics and status
+kafka-consumer-groups.sh --all-groups --bootstrap-server localhost:9092 --describe
+
+> Remember to update Kafka and zookeeper's directories to someone that is not temp (update the server.properties and zookeeper.properties)
+
